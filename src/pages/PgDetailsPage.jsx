@@ -116,6 +116,9 @@ const PgDetailsPage = () => {
                 <AmenityItem icon={<Wind size={20} />} label="AC Rooms" available={pg.acAvailable} />
                 <AmenityItem icon={<Zap size={20} />} label="Laundry" available={pg.laundryAvailable} />
                 <AmenityItem icon={<ShieldCheck size={20} />} label="Security" available={true} />
+                {pg.customAmenities?.map((amenity, idx) => (
+                  <AmenityItem key={`custom-${idx}`} icon={<CheckCircle2 size={20} />} label={amenity} available={true} />
+                ))}
               </div>
             </div>
           </main>
