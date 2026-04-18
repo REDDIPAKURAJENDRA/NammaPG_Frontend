@@ -13,6 +13,7 @@ const EditPgPage = () => {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [imageUrl, setImageUrl] = useState('');
+  const [customAmenityInput, setCustomAmenityInput] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -58,6 +59,17 @@ const EditPgPage = () => {
 
   const removeImage = (url) => {
     setFormData(prev => ({ ...prev, images: prev.images.filter(img => img !== url) }));
+  };
+
+  const addCustomAmenity = () => {
+    if (customAmenityInput.trim() && !formData.customAmenities?.includes(customAmenityInput.trim())) {
+      setFormData(prev => ({ ...prev, customAmenities: [...(prev.customAmenities || []), customAmenityInput.trim()] }));
+      setCustomAmenityInput('');
+    }
+  };
+
+  const removeCustomAmenity = (amenity) => {
+    setFormData(prev => ({ ...prev, customAmenities: prev.customAmenities.filter(a => a !== amenity) }));
   };
 
   const handleSubmit = async (e) => {
@@ -170,6 +182,28 @@ const EditPgPage = () => {
                 <Checkbox label="AC Rooms" name="acAvailable" checked={formData.acAvailable} onChange={handleChange} />
                 <Checkbox label="Laundry" name="laundryAvailable" checked={formData.laundryAvailable} onChange={handleChange} />
                 <Checkbox label="Parking" name="parkingAvailable" checked={formData.parkingAvailable} onChange={handleChange} />
+              </div>
+
+              <div style={{ marginTop: '1rem' }}>
+                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.875rem', marginBottom: '10px' }}>Custom Amenities</label>
+                <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '1rem' }}>
+                  <input 
+                    type="text" 
+                    value={customAmenityInput} 
+                    onChange={(e) => setCustomAmenityInput(e.target.value)} 
+                    placeholder="e.g. Gym, Swimming Pool" 
+                    style={{ ...inputStyle, flex: 1 }} 
+                  />
+                  <button type="button" onClick={addCustomAmenity} className="btn btn-primary" style={{ padding: '0 1.5rem', borderRadius: '0.5rem' }}>Add</button>
+                </div>
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  {formData.customAmenities?.map((amenity, idx) => (
+                    <div key={idx} style={{ padding: '0.25rem 0.75rem', backgroundColor: '#e5e7eb', borderRadius: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.875rem', color: '#374151' }}>
+                      {amenity}
+                      <button type="button" onClick={() => removeCustomAmenity(amenity)} style={{ color: '#ef4444', fontWeight: 'bold', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>&times;</button>
+                    </div>
+                  ))}
+                </div>
               </div>
             </section>
 
